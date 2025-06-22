@@ -6,8 +6,115 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .card {
+                border-radius: .75rem;
+                background-color: #e0e0e0;
+                padding: .5rem;
+                margin-bottom: 1rem;
+                transition-duration: 0.37s;
+            }
+            .btn{
+                color: white;
+                background: #576e31;
+                border-radius: 1rem;
+                padding: 1rem;
+                transition-duration: 0.17s;
+            }
+            .btn:hover {
+                cursor: pointer;
+                background: #82a14e;
+            }
+            .btn-red {
+                background: #7b0101;
+            }
+            .btn-red:hover {
+                background: #c80b0b;
+            }
+            .main-container{
+                max-width: 1000px;
+            }
+            .card input{
+                width: 100%;
+            }
+            input[type=text], input[type=datetime] {
+                border: none;
+                border-radius: .5rem;
+                height: 2rem;
+                padding-left: 1rem;
+                margin-bottom: .2rem;
+            }
+            .title {
+                color: #002504;
+                margin: 0;
+                font-size: 1.5rem;
+            }
+            .descrip {
+                margin: 1rem 0;
+            }
+            .when {
+                color: #656565;
+            }
+            .hidden {
+                height: 0;
+                opacity: 0;
+                transition-duration: 0.37s;
+                margin: 0;
+                padding: 0;
+            }
+            .card.red {
+                background: #ffd1d1;
+            }
+            .card.green {
+                background: #d2f4da;
+            }
+            .card.yellow {
+                background: #f4e7d2;
+            }
+        </style>
     </head>
     <body>
         Это заглушка для будущего проекта. Главное, что работает. Работает ведь?
+        Todo list
+        <center>
+            <div class="main-container">
+                <div class="addable-card card">
+                    <input type="text" id="name", name="name", placeholder="Название">
+                    <br>
+                    <input type="text" id="description", name="description", placeholder="Описание">
+                    <br>
+                    <input type="datetime" placeholder="Когда завершить">
+                    <br><br>
+                    <div class="btn" id="add_task">Добавить задачу</div>
+                </div>
+                <div id="tasks">
+                    <div class="card red hidden" id="task_2">
+                        <h4 class="title">Доехать до калининграда</h4>
+                        <div class="descrip">Сесть на поезд, и оказаться быстренько дома</div>
+                        <label class="when">Дедлайн: 23:50</label>
+                        <br><br>
+                        <div class="btn btn-red">Закрыть задачу</div>
+                    </div>
+                    <div class="card" id="task_1">
+                        <h4 class="title">Доделать проект</h4>
+                        <div class="descrip">Пофиксить эту штучку, ту добавить, эту подправить</div>
+                        <label class="when">Дедлайн: До завтра</label>
+                        <br><br>
+                        <div class="btn btn-red">Закрыть задачу</div>
+                    </div>
+                </div>
+                <h2>Завершённые задачи:</h2>
+                <div id="done_tasks"></div>
+            </div>
+        </center>
     </body>
+    <script>
+        adder = document.querySelector('#add_task')
+        adder.onclick = function() {
+            document.querySelector("#task_2").classList.remove('hidden');
+        }
+    </script>
 </html>
