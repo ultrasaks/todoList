@@ -82,16 +82,18 @@
         <center>
             <div class="main-container">
                 <div class="addable-card card">
-                    <input type="text" id="name", name="name", placeholder="Название">
+                    <form>
+                    <input type="text" id="name", name="name", placeholder="Название" required>
                     <br>
-                    <input type="text" id="description", name="description", placeholder="Описание">
+                    <input type="text" id="description", name="description", placeholder="Описание" required>
                     <br>
-                    <input type="datetime" placeholder="Когда завершить">
+                    <input type="text" id="datetime" placeholder="Когда завершить" required>
                     <br><br>
                     <div class="btn" id="add_task">Добавить задачу</div>
+                    </form>
                 </div>
                 <div id="tasks">
-                    <div class="card red hidden" id="task_2">
+                    <div class="card red" id="task_2">
                         <h4 class="title">Доехать до калининграда</h4>
                         <div class="descrip">Сесть на поезд, и оказаться быстренько дома</div>
                         <label class="when">Дедлайн: 23:50</label>
@@ -112,9 +114,58 @@
         </center>
     </body>
     <script>
+        var cards = 2;
         adder = document.querySelector('#add_task')
+        const cardsContainer = document.getElementById("tasks");
+        const name_inp = document.getElementById('name')
+        const descrip = document.getElementById('description');
+        const datetime = document.getElementById('datetime');
         adder.onclick = function() {
-            document.querySelector("#task_2").classList.remove('hidden');
+            cards += 1
+            if (!descrip.value || !name_inp.value ){alert("Забыли кое-что");return}
+            if (!datetime.value) {datetime.value = 'нету'}
+
+            const newCard = document.createElement("div");
+            newCard.className = "card hidden";
+
+            const title = document.createElement('h4');
+            title.className = "title";
+            title.textContent = name.value;
+
+            const body = document.createElement('div');
+            body.className = 'descrip';
+            body.textContent = descrip.value;
+
+            
+            const deadline = document.createElement('label');
+            deadline.className = 'when';
+            deadline.textContent = `Дедлайн: ${datetime.value}`;
+            
+            const btn = document.createElement('div');
+            btn.className = 'btn btn-red';
+            btn.textContent = 'Закрыть задачу';
+
+            btn.addEventListener('click', () => {
+                alert('Кнопка внутри карточки нажата!');
+            });
+
+            const br = document.createElement('br');
+            const br2 = document.createElement('br');
+
+            newCard.append(title, body, deadline, br, br2, btn);
+            newCard.id = `task_${cards}`
+
+
+            cardsContainer.prepend(newCard);
+
+            descrip.value = name_inp.value = datetime.value = ''
+
+            requestAnimationFrame(() => {
+                newCard.classList.remove('hidden')
+            });
+
         }
+
+        
     </script>
 </html>
