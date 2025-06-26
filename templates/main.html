@@ -93,20 +93,7 @@
                     </form>
                 </div>
                 <div id="tasks">
-                    <div class="card red" id="task_2">
-                        <h4 class="title">Доехать до калининграда</h4>
-                        <div class="descrip">Сесть на поезд, и оказаться быстренько дома</div>
-                        <label class="when">Дедлайн: 23:50</label>
-                        <br><br>
-                        <div class="btn btn-red">Закрыть задачу</div>
-                    </div>
-                    <div class="card" id="task_1">
-                        <h4 class="title">Доделать проект</h4>
-                        <div class="descrip">Пофиксить эту штучку, ту добавить, эту подправить</div>
-                        <label class="when">Дедлайн: До завтра</label>
-                        <br><br>
-                        <div class="btn btn-red">Закрыть задачу</div>
-                    </div>
+                    
                 </div>
                 <h2>Завершённые задачи:</h2>
                 <div id="done_tasks"></div>
@@ -117,6 +104,7 @@
         var cards = 2;
         adder = document.querySelector('#add_task')
         const cardsContainer = document.getElementById("tasks");
+        const doneContainer = document.getElementById("done_tasks");
         const name_inp = document.getElementById('name')
         const descrip = document.getElementById('description');
         const datetime = document.getElementById('datetime');
@@ -125,12 +113,15 @@
             if (!descrip.value || !name_inp.value ){alert("Забыли кое-что");return}
             if (!datetime.value) {datetime.value = 'нету'}
 
+            const br = document.createElement('br');
+            const br2 = document.createElement('br');
+
             const newCard = document.createElement("div");
             newCard.className = "card hidden";
 
             const title = document.createElement('h4');
             title.className = "title";
-            title.textContent = name.value;
+            title.textContent = name_inp.value;
 
             const body = document.createElement('div');
             body.className = 'descrip';
@@ -146,11 +137,17 @@
             btn.textContent = 'Закрыть задачу';
 
             btn.addEventListener('click', () => {
-                alert('Кнопка внутри карточки нажата!');
+                newCard.classList.add('hidden')
+                doneContainer.prepend(newCard);
+
+                newCard.removeChild(btn)
+                newCard.removeChild(br2)
+
+                requestAnimationFrame(() => {
+                    newCard.classList.remove('hidden')
+                });
             });
 
-            const br = document.createElement('br');
-            const br2 = document.createElement('br');
 
             newCard.append(title, body, deadline, br, br2, btn);
             newCard.id = `task_${cards}`

@@ -6,3 +6,8 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     return render_template('main.html', title='?')
+
+#TODO:
+# Добавление на сервер
+# вход на сервер
+# перенос скриптов из html-ки
