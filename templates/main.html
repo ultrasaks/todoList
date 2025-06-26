@@ -74,11 +74,42 @@
             .card.yellow {
                 background: #f4e7d2;
             }
+            center {
+                margin-top: 4rem;
+            }
+            header {
+                padding: 1rem;
+                background: #e5e5e5;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: -webkit-fill-available;
+                border-radius: 0rem 0rem 1rem 1rem;
+                box-shadow: 0px 1px 8px #d3d0d0;
+                transition-duration: .2s;
+            }
+            header a {
+                color: black;
+                text-decoration: none;
+            }
+            header .btn {
+                padding: .5rem;
+                margin-left: .5rem;
+            }
+            .sesser {
+                display: flex;
+                transition-duration: .2s;
+            }
+            .none {
+                display: none;
+            }
         </style>
     </head>
     <body>
-        Это заглушка для будущего проекта. Главное, что работает. Работает ведь?
-        Todo list
+        <header>
+            <a href="#" id="sess_enter">Ввести сессию</a>
+            <div class="sesser none" id="sesser"><input type="text" id="session_field"><div class="btn" id="sess_ok">OK</div></div>
+        </header>
         <center>
             <div class="main-container">
                 <div class="addable-card card">
@@ -101,13 +132,14 @@
         </center>
     </body>
     <script>
-        var cards = 2;
+        var cards = 0; // оставить тут
         adder = document.querySelector('#add_task')
         const cardsContainer = document.getElementById("tasks");
         const doneContainer = document.getElementById("done_tasks");
         const name_inp = document.getElementById('name')
         const descrip = document.getElementById('description');
         const datetime = document.getElementById('datetime');
+
         adder.onclick = function() {
             cards += 1
             if (!descrip.value || !name_inp.value ){alert("Забыли кое-что");return}
@@ -155,14 +187,41 @@
 
             cardsContainer.prepend(newCard);
 
+            const tosend = {
+                    name: name_inp.value,
+                    description: descrip.value,
+                    datetime: datetime.value
+                };
+            
             descrip.value = name_inp.value = datetime.value = ''
 
             requestAnimationFrame(() => {
                 newCard.classList.remove('hidden')
             });
 
+            
+            fetch('/new_task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    },
+                body: JSON.stringify(tosend)
+            });
+
         }
 
+        const sess_enter = document.getElementById('sess_enter');
+        const sesser = document.getElementById('sesser');
+        const session_field= document.getElementById('session_field');
+        const sess_ok = document.getElementById('sess_ok');
+        sess_enter.onclick = function () {
+            sess_enter.classList.add('none');
+            sesser.classList.remove('none');
+        }
+        sess_ok.onclick = function() {
+            sess_enter.classList.remove('none');
+            sesser.classList.add('none');
+        }
         
     </script>
 </html>
