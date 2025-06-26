@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from . import db
+from .models import Tasks
 
 rest = Blueprint('rest', __name__)
 
@@ -7,8 +8,19 @@ rest = Blueprint('rest', __name__)
 def new_tasker():
     data = request.get_json()
     print(data)
-    q = data.get('name')
-    return {"id": 1}
+    sess_id = request.cookies.get('sess_id')
+    #TODO: CHECK
+    task = Tasks()
+    task.title = data.get('name')
+    task.description = data.get('description')
+    task.deadline = data.get('datetime')
+    if not task.deadline:
+        task.deadline = 'нету'
+    task.owner = sess_id
+    
+    db.session.add(task)
+    db.session.commit()
+    return {"id": task.id}
 
 
 @rest.route('/del_task', methods=['POST'])

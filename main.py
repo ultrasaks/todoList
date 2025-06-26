@@ -8,14 +8,18 @@ main = Blueprint('main', __name__)
 def index():
     sess_id = request.cookies.get('sess_id')
     
-    if not sess_id:
+    if not sess_id or len(sess_id) > 36:
         sess_id = str(uuid4())
     
     sess_tasks = []
     sess_done = []
         
     response = make_response(
-        render_template('main.html', title='?', sess_tasks=sess_tasks, sess_done=sess_done)
+        render_template('main.html', 
+                        title='?', 
+                        sess_id=sess_id,
+                        sess_tasks=sess_tasks, 
+                        sess_done=sess_done)
     )
     
     response.set_cookie('sess_id', sess_id, max_age=31536000)
@@ -24,10 +28,9 @@ def index():
 
 #TODO:
 
-# замена сессии
-# После замены - перезагрузка
+
 # Получение задач с сервера по сессии
-# Создать модель с задачами
-# Добавление на сервер - получение реального айди
+# Добавление на сервер 
+# Получение реального айди
 # Удаление с сервера
 # перенос скриптов из html-ки
