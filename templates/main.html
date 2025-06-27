@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -5,104 +6,9 @@
         <title>Заглушка</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="/assets/main.css">
         <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            .card {
-                border-radius: .75rem;
-                background-color: #e0e0e0;
-                padding: .5rem;
-                margin-bottom: 1rem;
-                transition-duration: 0.37s;
-            }
-            .btn{
-                color: white;
-                background: #576e31;
-                border-radius: 1rem;
-                padding: 1rem;
-                transition-duration: 0.17s;
-            }
-            .btn:hover {
-                cursor: pointer;
-                background: #82a14e;
-            }
-            .btn-red {
-                background: #7b0101;
-            }
-            .btn-red:hover {
-                background: #c80b0b;
-            }
-            .main-container{
-                max-width: 1000px;
-            }
-            .card input{
-                width: 100%;
-            }
-            input[type=text], input[type=datetime] {
-                border: none;
-                border-radius: .5rem;
-                height: 2rem;
-                padding-left: 1rem;
-                margin-bottom: .2rem;
-            }
-            .title {
-                color: #002504;
-                margin: 0;
-                font-size: 1.5rem;
-            }
-            .descrip {
-                margin: 1rem 0;
-            }
-            .when {
-                color: #656565;
-            }
-            .hidden {
-                height: 0;
-                opacity: 0;
-                transition-duration: 0.37s;
-                margin: 0;
-                padding: 0;
-            }
-            .card.red {
-                background: #ffd1d1;
-            }
-            .card.green {
-                background: #d2f4da;
-            }
-            .card.yellow {
-                background: #f4e7d2;
-            }
-            center {
-                margin-top: 4rem;
-            }
-            header {
-                padding: 1rem;
-                background: #e5e5e5;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: -webkit-fill-available;
-                border-radius: 0rem 0rem 1rem 1rem;
-                box-shadow: 0px 1px 8px #d3d0d0;
-                transition-duration: .2s;
-            }
-            header a {
-                color: black;
-                text-decoration: none;
-            }
-            header .btn {
-                padding: .5rem;
-                margin-left: .5rem;
-            }
-            .sesser {
-                display: flex;
-                transition-duration: .2s;
-            }
-            .none {
-                display: none;
-            }
+
         </style>
     </head>
     <body>
@@ -124,108 +30,29 @@
                     </form>
                 </div>
                 <div id="tasks">
-                    
+                    {% for task in sess_tasks %}
+                        <div class="card" id="task_{{task.id}}">
+                            <h4 class="title">{{task.title}}</h4>
+                            <div class="descrip">{{task.description}}</div>
+                            <label class="when">Дедлайн: {{task.deadline}}</label>
+                            <br><br>
+                            <div class="btn btn-red">Закрыть задачу</div>
+                        </div>
+                    {% endfor %}
                 </div>
+                    
                 <h2>Завершённые задачи:</h2>
-                <div id="done_tasks"></div>
+                <div id="done_tasks">
+                    {% for task in sess_done %}
+                    <div class="card" id="task_{{task.id}}">
+                        <h4 class="title">{{task.title}}</h4>
+                        <div class="descrip">{{task.description}}</div>
+                        <label class="when">Дедлайн: {{task.deadline}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </center>
     </body>
-    <script>
-        var cards = 0; // оставить тут
-        adder = document.querySelector('#add_task')
-        const cardsContainer = document.getElementById("tasks");
-        const doneContainer = document.getElementById("done_tasks");
-        const name_inp = document.getElementById('name')
-        const descrip = document.getElementById('description');
-        const datetime = document.getElementById('datetime');
-
-        adder.onclick = function() {
-            cards += 1
-            if (!descrip.value || !name_inp.value ){alert("Забыли кое-что");return}
-            if (!datetime.value) {datetime.value = 'нету'}
-
-            const br = document.createElement('br');
-            const br2 = document.createElement('br');
-
-            const newCard = document.createElement("div");
-            newCard.className = "card hidden";
-
-            const title = document.createElement('h4');
-            title.className = "title";
-            title.textContent = name_inp.value;
-
-            const body = document.createElement('div');
-            body.className = 'descrip';
-            body.textContent = descrip.value;
-
-            
-            const deadline = document.createElement('label');
-            deadline.className = 'when';
-            deadline.textContent = `Дедлайн: ${datetime.value}`;
-            
-            const btn = document.createElement('div');
-            btn.className = 'btn btn-red';
-            btn.textContent = 'Закрыть задачу';
-
-            btn.addEventListener('click', () => {
-                newCard.classList.add('hidden')
-                doneContainer.prepend(newCard);
-
-                newCard.removeChild(btn)
-                newCard.removeChild(br2)
-
-                requestAnimationFrame(() => {
-                    newCard.classList.remove('hidden')
-                });
-            });
-
-
-            newCard.append(title, body, deadline, br, br2, btn);
-            newCard.id = `task_${cards}`
-
-
-            cardsContainer.prepend(newCard);
-
-            const tosend = {
-                    name: name_inp.value,
-                    description: descrip.value,
-                    datetime: datetime.value
-                };
-            
-            descrip.value = name_inp.value = datetime.value = ''
-
-            requestAnimationFrame(() => {
-                newCard.classList.remove('hidden')
-            });
-            
-            fetch('/new_task', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                    },
-                body: JSON.stringify(tosend)
-            }).then(response => {return response.json();})
-            .then(data => {console.log(data); newCard['id'] = `task_${data["id"]}`});
-
-        }
-
-        const sess_enter = document.getElementById('sess_enter');
-        const sesser = document.getElementById('sesser');
-        const session_field= document.getElementById('session_field');
-        const sess_ok = document.getElementById('sess_ok');
-
-        sess_enter.onclick = function () {
-            sess_enter.classList.add('none');
-            sesser.classList.remove('none');
-        }
-        sess_ok.onclick = function() {
-            if (!session_field.value || session_field.value.length > 36){return}
-            document.cookie = `sess_id=${session_field.value}; path=/; max-age=31536000`;
-            alert('Сессия заменена');
-            window.location.reload();
-
-        }
-        
-    </script>
+    <script type="text/javascript" src="/assets/main.js"></script>
 </html>

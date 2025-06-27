@@ -26,4 +26,11 @@ def new_tasker():
 @rest.route('/del_task', methods=['POST'])
 def del_tasker():
     data = request.get_json()
-    return {"id": 1}
+    sess_id = request.cookies.get('sess_id')
+    task_id = int(data.get('id').replace('task_', ''))
+    task = Tasks.query.filter_by(owner=sess_id, id=task_id).first()
+    if task is not None:
+        task.done = True
+    db.session.add(task)
+    db.session.commit()
+    return {"id": task.id}
