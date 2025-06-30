@@ -105,12 +105,14 @@ header a {
 
 header .btn {
     padding: .5rem;
-    margin-left: .5rem;
+    text-align: center;
 }
 
 .sesser {
     display: flex;
     transition-duration: .2s;
+    flex-direction: column;
+    margin-top: .5rem;
 }
 
 .none {

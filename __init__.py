@@ -14,6 +14,7 @@ def create_app():
     app = Flask(__name__, static_url_path="/assets", static_folder='assets')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "temp-key")
     db.init_app(app)
     
     from .models import Tasks

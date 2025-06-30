@@ -107,14 +107,27 @@ adder.onclick = function () {
 }
 // создание в живую
 
-const sess_enter = document.getElementById('sess_enter');
-const sesser = document.getElementById('sesser');
-const session_field = document.getElementById('session_field');
+const log_enter = document.getElementById('log_enter');
+const reg_enter = document.getElementById('reg_enter');
+const logger = document.getElementById('logger');
+const regger = document.getElementById('regger');
+const reg_username = document.getElementById('reg_username');
+const reg_pass = document.getElementById('reg_pass');
+const log_username = document.getElementById('log_username');
+const log_pass = document.getElementById('log_pass');
 const sess_ok = document.getElementById('sess_ok');
 
-sess_enter.onclick = function () {
-    sess_enter.classList.add('none');
-    sesser.classList.remove('none');
+log_enter.onclick = function () {
+    log_enter.classList.add('none');
+    reg_enter.classList.remove('none');
+    regger.classList.add('none');
+    logger.classList.remove('none');
+}
+reg_enter.onclick = function () {
+    reg_enter.classList.add('none');
+    log_enter.classList.remove('none');
+    regger.classList.remove('none');
+    logger.classList.add('none');
 }
 sess_ok.onclick = function () {
     if (!session_field.value || session_field.value.length > 36) { return }
