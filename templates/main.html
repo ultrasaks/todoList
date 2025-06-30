@@ -13,11 +13,23 @@
     </head>
     <body>
         <header>
-            <!-- <a href="#" id="sess_enter">Ввести сессию</a> -->
+            {% if user == None %}
             <a href="#" id="log_enter">Войти</a>
             <a href="#" id="reg_enter">Зарегистрироваться</a>
-            <div class="sesser none" id="logger"><input type="text" id="log_username"><input type="text" id="log_pass" placeholder="Пароль"><div class="btn" id="sess_ok">Войти</div></div>
-            <div class="sesser none" id="regger"><input type="text" id="reg_username" placeholder="Имя"><input type="text" id="reg_pass" placeholder="Пароль"><div class="btn" id="sess_ok">Зарегистрироваться</div></div>
+            <div class="sesser none" id="logger">
+                <input type="text" id="log_username" placeholder="Имя">
+                <input type="text" id="log_pass" placeholder="Пароль">
+                <div class="btn" id="log_ok">Войти</div>
+            </div>
+            <div class="sesser none" id="regger">
+                <input type="text" id="reg_username" placeholder="Имя">
+                <input type="text" id="reg_pass" placeholder="Пароль">
+                <input type="text" id="reg_pass2" placeholder="Повтор пароля">
+                <div class="btn" id="reg_ok">Зарегистрироваться</div>
+            </div>
+            {% else %}
+            <a href="/logout">Выйти</a>
+            {% endif %}
         </header>
         <center>
             <div class="main-container">
@@ -58,4 +70,5 @@
         </center>
     </body>
     <script type="text/javascript" src="/assets/main.js"></script>
+    {% if user == None %}<script type="text/javascript" src="/assets/account.js"></script>{% endif %}
 </html>
